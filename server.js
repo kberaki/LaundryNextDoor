@@ -4,10 +4,11 @@ const express = require('express')
 const superagent = require('superagent')
 const { Schema, model } = require('mongoose')
 const mongoose = require('mongoose')
-const app = express()
+
 
 require('dotenv').config()
-const mongoUrl = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@ds229722.mlab.com:29722/bookapp`
+
+const mongoURL = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@ds147872.mlab.com:47872/md301`
 
 mongoose.connect(mongoUrl)
 
@@ -16,6 +17,8 @@ db.on('error', console.error.bind(console, 'Connection error'))
 db.once('open', () => console.log('db connection open!'))
 
 const PORT = process.env.PORT || 3000
+
+const app = express()
 
 app.use(express.urlencoded({ extended: true }))
 //when adding css files, put them in a public folder and include this line of code
