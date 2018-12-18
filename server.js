@@ -10,9 +10,10 @@ require('dotenv').config()
 
 const mongoURL = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@ds147872.mlab.com:47872/md301`
 
-mongoose.connect(mongoUrl)
+mongoose.connect(mongoURL)
 
 const db = mongoose.connection
+
 db.on('error', console.error.bind(console, 'Connection error'))
 db.once('open', () => console.log('db connection open!'))
 
