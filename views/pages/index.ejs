@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../templates/head %>
+<body>
+  <h1>Order Form</h1>
+  <form id='order-form' action='/search' method='GET'>
+    <fieldset>
+      <label for='firstName'>First Name</label>
+      <input name='first name'/>
+      <label for='lastName'>Last Name</label>
+      <input type='name' name='Last name'/>
+      <label for='lastName'>Address</label>
+      <input type='street address' name='street address'/>
+    </fieldset>
+    <fieldset>
+      <label for='author'>Author</label>
+      <input type='radio' name='param' value='author'/>
+    </fieldset>
+    <button type='submit'>Submit</button>
+  </form>
+</body>
+<% include ../templates/footer %>
+</html>
