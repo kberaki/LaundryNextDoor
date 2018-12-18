@@ -17,5 +17,13 @@
     "express": "^4.16.4",
     "mongoose": "^5.4.0",
     "superagent": "^4.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kberaki/LaundryNextDoor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kberaki/LaundryNextDoor/issues"
+  },
+  "homepage": "https://github.com/kberaki/LaundryNextDoor#readme"
 }
