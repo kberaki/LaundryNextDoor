@@ -29,7 +29,8 @@ app.set('view engine', 'ejs')
 
 
 app.get('/', (req, res) => {
-  res.render('pages/index')
+  //console.log("<h1>THis is the main page</h1>")
+   res.render('pages/index')
 })
 
 app.get('/search', searchHandler)
