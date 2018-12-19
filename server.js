@@ -35,6 +35,9 @@ app.get('/', (req, res) => {
 
 app.get('/search', searchHandler)
 app.post('/collection', collectionHandler)
+// app.get('/provider-form',(req,res)=>{
+//   res.render('pages/provider-form')
+// }
 
 app.use('*', (req, res) => {
   res.send('Something broke')
