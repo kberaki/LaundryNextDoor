@@ -1,13 +1,58 @@
 'use strict'
 
 const express = require('express')
-const superagent = require('superagent')
-const { Schema, model } = require('mongoose')
-const mongoose = require('mongoose')
-// const bodyParse=require('body-parser')
-// const path = require('path')
-
+const app = express()
+//const superagent = require('superagent')
+//const { Schema, model } = require('mongoose')
 require('dotenv').config()
+const PORT = process.env.PORT || 3000
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const mongoose = require('mongoose')
+// mongoose.Promise = global.Promise;mongoose.connect("mongodb://localhost:27017/LaundryNextDoor");
+
+const laundarySchema = new mongoose.Schema({
+  fullName: String,
+  emailAddress: String,
+  phoneNumber: Number,
+  address: String,
+  state:String,
+  City:String,
+  zipcode: Number,
+
+})
+const User = mongoose.model("User", laundarySchema)
+
+app.get('/', (req, res) => {
+  res.render('pages/index')
+})
+app.get('/post-orderForm', (req, res)=>{
+  res.render('pages/order-form')
+})
+app.get("/signupForm", (req, res) => {
+  res.render("pages/signup.ejs")
+ });
+ app.post("/signupForm", (req, res) => {
+  const userData = new User({
+    fullName : req.body.name,
+    emailAddress:req.body.email,
+    phoneNumber:req.body.phone,
+    address:req.body.address,
+    state:req.body.state,
+    City:req.body.City,
+    zipcode:req.body.zipcode,
+  });
+  userData.save()
+  .then(item => {
+  res.send("You have successfully signed up");
+  })
+  .catch(err => {
+  res.status(400).send(" Error occuried please check your data")
+  });
+});
+
 
 const mongoURL = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@ds147872.mlab.com:47872/md301`
 
@@ -18,71 +63,16 @@ const db = mongoose.connection
 db.on('error', console.error.bind(console, 'Connection error'))
 db.once('open', () => console.log('db connection open!'))
 
-const PORT = process.env.PORT || 3000
-
-const app = express()
-
-// app.use(bodyParse.urlencoded({extended: false}))
-// app.use(express.static(path.resolve(__dirname, 'public')))
-
-// app.post('/post-orderForm', function(req, res){
-//   dbConn.then(function(db){
-//     db.collection('orderForm'), insertone(req.body)
-//   })
-//   res.send('Thank you! data recieved')
-// })
-
 app.use(express.urlencoded({ extended: true }))
 //when adding css files, put them in a public folder and include this line of code
 app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
 
-
-app.get('/', (req, res) => {
-  //console.log("<h1>THis is the main page</h1>")
-   res.render('pages/index')
-})
-
-// app.get('/order-form', nearestLoc)
-// // app.post('/collection', collectionHandler)
-
-app.get('/post-orderForm', (req, res)=>{
-  res.render('pages/order-form')
-})
-
-
 app.use('*', (req, res) => {
   res.send('Something broke')
 })
 // destinations=SilverSpring,Md
 // origins=Washington,DC
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
-
-function nearestLoc(req, res) {
-  let url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&${req.query.origins}&${req.query.destinations}&${key=GOOGLE_API_KEY}`
-  req.query.param === 'distance' ? url += `indistance:${req.query.distanceSearch}` : url += `induration:${req.query.distanceSearch}`
-  superagent.get(url)
-    .then(laundry => {
-      let laundryArr = []
-      for(let i = 0; i < 10; i++) {
-        laundryArr.push(new Book(laundry.body.rows[i]))
-      }
-      res.render('pages/order-form', { bookList: laundryArr })
-     })
-    .catch(err => res.send('something broke'))
-}
-
-
-const Laundry = function(laundry) {
-  this.distance = laundry.element.distance
-  this.duration = laundry.element.duration ? laundry.element.duration[0] : 'none'
-}
-
-const laundarySchema = new Schema({
-  distance: String,
-  duration: String,
-})
-
-const ordercoll = model('ordercoll', laundarySchema)
-
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`)})
