@@ -21,6 +21,7 @@ const laundarySchema = new mongoose.Schema({
   state:String,
   City:String,
   zipcode: Number,
+  //
 
 })
 const User = mongoose.model("User", laundarySchema)
