@@ -34,6 +34,9 @@ app.get('/post-orderForm', (req, res)=>{
 app.get("/signupForm", (req, res) => {
   res.render("pages/signup.ejs")
  });
+ app.get('/provider-form', (req, res)=>{
+  res.render('pages/provider-form')
+ })
  app.post("/signupForm", (req, res) => {
   const userData = new User({
     fullName : req.body.name,
@@ -52,6 +55,36 @@ app.get("/signupForm", (req, res) => {
   res.status(400).send(" Error occuried please check your data")
   });
 });
+
+ const providerSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  zip: Number,
+  city:String
+ })
+ 
+ app.post('/provider-form', function(req,res){
+  console.log('Check')
+  new Provider({
+    name: req.body.FirstName,
+    email:req.body.email,
+    city: req.body.city,
+    zip:req.body.zip
+ }).save(function(err, Provider){
+   if(err) {
+     console.log('Error')
+   }
+   else res.send('Successful')
+ })
+ })
+ app.use('*', (req, res) => {
+  res.send('Something broke')
+ })
+ const Provider =mongoose.model('Provider',providerSchema)
+
+
+
+
 
 
 const mongoURL = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@ds147872.mlab.com:47872/md301`
