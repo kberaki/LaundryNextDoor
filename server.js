@@ -1,12 +1,58 @@
 'use strict'
 
 const express = require('express')
-const superagent = require('superagent')
-const { Schema, model } = require('mongoose')
-const mongoose = require('mongoose')
-
-
+const app = express()
+//const superagent = require('superagent')
+//const { Schema, model } = require('mongoose')
 require('dotenv').config()
+const PORT = process.env.PORT || 3000
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const mongoose = require('mongoose')
+// mongoose.Promise = global.Promise;mongoose.connect("mongodb://localhost:27017/LaundryNextDoor");
+
+const laundarySchema = new mongoose.Schema({
+  fullName: String,
+  emailAddress: String,
+  phoneNumber: Number,
+  address: String,
+  state:String,
+  City:String,
+  zipcode: Number,
+
+})
+const User = mongoose.model("User", laundarySchema)
+
+app.get('/', (req, res) => {
+  res.render('pages/index')
+})
+app.get('/post-orderForm', (req, res)=>{
+  res.render('pages/order-form')
+})
+app.get("/signupForm", (req, res) => {
+  res.render("pages/signup.ejs")
+ });
+ app.post("/signupForm", (req, res) => {
+  const userData = new User({
+    fullName : req.body.name,
+    emailAddress:req.body.email,
+    phoneNumber:req.body.phone,
+    address:req.body.address,
+    state:req.body.state,
+    City:req.body.City,
+    zipcode:req.body.zipcode,
+  });
+  userData.save()
+  .then(item => {
+  res.send("You have successfully signed up");
+  })
+  .catch(err => {
+  res.status(400).send(" Error occuried please check your data")
+  });
+});
+
 
 const mongoURL = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@ds147872.mlab.com:47872/md301`
 
@@ -17,71 +63,16 @@ const db = mongoose.connection
 db.on('error', console.error.bind(console, 'Connection error'))
 db.once('open', () => console.log('db connection open!'))
 
-const PORT = process.env.PORT || 3000
-
-const app = express()
-
 app.use(express.urlencoded({ extended: true }))
 //when adding css files, put them in a public folder and include this line of code
 app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
 
-
-app.get('/', (req, res) => {
-  //console.log("<h1>THis is the main page</h1>")
-   res.render('pages/index')
-})
-
-app.get('/search', searchHandler)
-app.post('/collection', collectionHandler)
-
 app.use('*', (req, res) => {
   res.send('Something broke')
 })
-
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
-
-function searchHandler(req, res) {
-  let url = 'https://www.googleapis.com/books/v1/volumes?q=+'
-  req.query.param === 'title' ? url += `intitle:${req.query.bookSearch}` : url += `inauthor:${req.query.bookSearch}`
-  superagent.get(url)
-    .then(books => {
-      let booksArr = []
-      for(let i = 0; i < 10; i++) {
-        booksArr.push(new Book(books.body.items[i]))
-      }
-      res.render('pages/searchResults', { bookList: booksArr })
-    })
-    .catch(err => res.send('something broke'))
-}
-
-function collectionHandler (req, res) {
-  console.log(req.body)
-  const newBook = new BookShelf({
-    title: req.body.title,
-    author: req.body.author,
-    comments: req.body.comments
-  })
-  newBook.save()
-    .then(result => {
-      console.log(result)
-      BookShelf.find({}, (err, books) => {
-        console.log('books', books)
-        res.render('pages/collection', {collection: books})
-      })
-    })
-}
-
-const Book = function(book) {
-  this.title = book.volumeInfo.title
-  this.author = book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'none'
-}
-
-const BookSchema = new Schema({
-  title: String,
-  author: String,
-  comments: String
-})
-
-const BookShelf = model('BookShelf', BookSchema)
+// destinations=SilverSpring,Md
+// origins=Washington,DC
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`)})
