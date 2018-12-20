@@ -4,7 +4,8 @@ const express = require('express')
 const superagent = require('superagent')
 const { Schema, model } = require('mongoose')
 const mongoose = require('mongoose')
-
+// const bodyParse=require('body-parser')
+// const path = require('path')
 
 require('dotenv').config()
 
@@ -21,6 +22,16 @@ const PORT = process.env.PORT || 3000
 
 const app = express()
 
+// app.use(bodyParse.urlencoded({extended: false}))
+// app.use(express.static(path.resolve(__dirname, 'public')))
+
+// app.post('/post-orderForm', function(req, res){
+//   dbConn.then(function(db){
+//     db.collection('orderForm'), insertone(req.body)
+//   })
+//   res.send('Thank you! data recieved')
+// })
+
 app.use(express.urlencoded({ extended: true }))
 //when adding css files, put them in a public folder and include this line of code
 app.use(express.static('public'))
@@ -33,55 +44,45 @@ app.get('/', (req, res) => {
    res.render('pages/index')
 })
 
-app.get('/search', searchHandler)
-app.post('/collection', collectionHandler)
+// app.get('/order-form', nearestLoc)
+// // app.post('/collection', collectionHandler)
+
+app.get('/post-orderForm', (req, res)=>{
+  res.render('pages/order-form')
+})
+
 
 app.use('*', (req, res) => {
   res.send('Something broke')
 })
-
+// destinations=SilverSpring,Md
+// origins=Washington,DC
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
 
-function searchHandler(req, res) {
-  let url = 'https://www.googleapis.com/books/v1/volumes?q=+'
-  req.query.param === 'title' ? url += `intitle:${req.query.bookSearch}` : url += `inauthor:${req.query.bookSearch}`
+function nearestLoc(req, res) {
+  let url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&${req.query.origins}&${req.query.destinations}&${key=GOOGLE_API_KEY}`
+  req.query.param === 'distance' ? url += `indistance:${req.query.distanceSearch}` : url += `induration:${req.query.distanceSearch}`
   superagent.get(url)
-    .then(books => {
-      let booksArr = []
+    .then(laundry => {
+      let laundryArr = []
       for(let i = 0; i < 10; i++) {
-        booksArr.push(new Book(books.body.items[i]))
+        laundryArr.push(new Book(laundry.body.rows[i]))
       }
-      res.render('pages/searchResults', { bookList: booksArr })
-    })
+      res.render('pages/order-form', { bookList: laundryArr })
+     })
     .catch(err => res.send('something broke'))
 }
 
-function collectionHandler (req, res) {
-  console.log(req.body)
-  const newBook = new BookShelf({
-    title: req.body.title,
-    author: req.body.author,
-    comments: req.body.comments
-  })
-  newBook.save()
-    .then(result => {
-      console.log(result)
-      BookShelf.find({}, (err, books) => {
-        console.log('books', books)
-        res.render('pages/collection', {collection: books})
-      })
-    })
+
+const Laundry = function(laundry) {
+  this.distance = laundry.element.distance
+  this.duration = laundry.element.duration ? laundry.element.duration[0] : 'none'
 }
 
-const Book = function(book) {
-  this.title = book.volumeInfo.title
-  this.author = book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'none'
-}
-
-const BookSchema = new Schema({
-  title: String,
-  author: String,
-  comments: String
+const laundarySchema = new Schema({
+  distance: String,
+  duration: String,
 })
 
-const BookShelf = model('BookShelf', BookSchema)
+const ordercoll = model('ordercoll', laundarySchema)
+

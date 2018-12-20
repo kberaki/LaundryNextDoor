@@ -9,15 +9,17 @@
   <script src="main.js"></script>
 </head>
 <body>
+  <form method="POST" action="/post-orderForm">
 <fieldset>
   <legend>Customer Information</legend>
+  <label for='distanceSearch'>Nearest Service</label>
   <label>First Name
   <input type="name" name="First Name">
   <label>Last Name 
   <input type="name" name="Last Name">
   </label> <br>
   <label>Address
-  <input type="Street Address" name="Street Address"> <br>
+  <input type="Street Address" name="param"> <br>
   </label>
   <label>City
   <input type="city" name="city"> 
@@ -26,7 +28,7 @@
   <input type="state" name="state"> 
   </label>
   <label>Zip-Code
-  <input type="zip-code" name="zip-code"> <br>
+  <input type="zip-code" name="param"> <br>
   </label>
   <label>Telephone
   <input type="telephone" name="telephone"> 
@@ -39,6 +41,8 @@
   </label>
   <input type="submit" name="submit" value="Submit">
 </label>
-</fieldset>  
+</fieldset> 
+</form> 
+<a href=order-form.html">Order Form</a>
 </body>
 </html>
