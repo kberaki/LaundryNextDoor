@@ -36,6 +36,18 @@ const laundarySchema = new mongoose.Schema({
 })
 const User = mongoose.model("User", laundarySchema)
 
+const orderSchema = new mongoose.Schema({
+  fullName: String,
+  emailAddress: String,
+  phoneNumber: Number,
+  address: String,
+  state:String,
+  City:String,
+  specialAtt:String,
+
+})
+const Order = mongoose.model("Order", orderSchema)
+
 app.get('/', (req, res) => {
   res.render('pages/index')
 })
@@ -67,6 +79,25 @@ app.get("/signupForm", (req, res) => {
   });
 });
 
+app.post("/post-orderForm", (req, res) => {
+  const orderData = new Order({
+    fullName : req.body.name,
+    emailAddress:req.body.email,
+    phoneNumber:req.body.phone,
+    address:req.body.address,
+    state:req.body.state,
+    City:req.body.city,
+    specialAtt:req.body.attention
+  });
+  orderData.save()
+  .then(item => {
+  res.send("You have successfully placed an order, thank you for your business");
+  })
+  .catch(err => {
+  res.status(400).send(" Error occuried please check your data")
+  });
+});
+
  app.post('/provider-form', function(req,res){
   console.log('Check')
   new Provider({
@@ -91,7 +122,7 @@ app.set('view engine', 'ejs')
 
 let dest
 Provider.find({}, (err, addr)=>{
-let dest= addr[12].address 
+let dest= addr[0].address 
 console.log(dest)
  })
 
