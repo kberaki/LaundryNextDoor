@@ -1,17 +1,28 @@
 'use strict'
-
+const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
 const superagent = require('superagent')
-//const { Schema, model } = require('mongoose')
 require('dotenv').config()
 const PORT = process.env.PORT || 3000
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const mongoose = require('mongoose')
-// mongoose.Promise = global.Promise;mongoose.connect("mongodb://localhost:27017/LaundryNextDoor");
+const mongoURL = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@ds147872.mlab.com:47872/md301`
+
+const db = mongoose.connection
+const providerSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  address:String,
+  zip: Number,
+  city:String
+ })
+
+const Provider =mongoose.model('Provider',providerSchema)
+
+mongoose.connect(mongoURL)
 
 const laundarySchema = new mongoose.Schema({
   fullName: String,
@@ -21,7 +32,6 @@ const laundarySchema = new mongoose.Schema({
   state:String,
   City:String,
   zipcode: Number,
-  //
 
 })
 const User = mongoose.model("User", laundarySchema)
@@ -57,18 +67,12 @@ app.get("/signupForm", (req, res) => {
   });
 });
 
- const providerSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  zip: Number,
-  city:String
- })
- 
  app.post('/provider-form', function(req,res){
   console.log('Check')
   new Provider({
     name: req.body.FirstName,
     email:req.body.email,
+    address:req.body.address,
     city: req.body.city,
     zip:req.body.zip
  }).save(function(err, Provider){
@@ -78,10 +82,6 @@ app.get("/signupForm", (req, res) => {
    else res.send('Successful')
  })
  })
-//  app.use('*', (req, res) => {
-//   res.send('Something broke')
-//  })
-
 
 app.use(express.urlencoded({ extended: true }))
 //when adding css files, put them in a public folder and include this line of code
@@ -89,14 +89,15 @@ app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
 
-// app.get('/', (req, res) => {
-//    res.render('pages/index')
-// })
+let dest
+Provider.find({}, (err, addr)=>{
+let dest= addr[12].address 
+console.log(dest)
+ })
 
-//let destinations='SilverSpring,Md'
-//let origins='Washington,DC'
 app.get('/order', (req, res) => {
-  const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${req.query.origins}&destinations=${req.query.destinations}&key=${process.env.GOOGLE_API_KEY}`
+  let orig ="2901+argentina+pl+Bowie"
+  const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest}&key=${process.env.GOOGLE_API_KEY}`
   superagent.get(url)
   .then(result=>{
     res.send(new Distance(result))
@@ -115,18 +116,11 @@ app.use('*', (req, res) => {
   res.send('Something broke')
 })
 
- const Provider =mongoose.model('Provider',providerSchema)
-
-const mongoURL = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@ds147872.mlab.com:47872/md301`
-
-mongoose.connect(mongoURL)
-
-const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'Connection error'))
 db.once('open', () => console.log('db connection open!'))
 
 
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}`)})
+
+
 
