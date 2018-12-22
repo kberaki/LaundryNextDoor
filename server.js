@@ -119,11 +119,12 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
-let orig
+let orig =[]
+
 let originaddr =[]
 Order.find({},(err, originaddr)=>{
-orig = originaddr[1].address
-console.log(orig)
+orig.push(originaddr[originaddr.length-1].address)
+console.log(orig.toString())
 })
 
 let dest
@@ -134,7 +135,7 @@ console.log(dest)
  })
 
 app.get('/order', (req, res) => {
-  let orig ="2901+argentina+pl+Bowie"
+
   const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest}&key=${process.env.GOOGLE_API_KEY}`
   superagent.get(url)
   .then(result=>{
@@ -157,6 +158,8 @@ app.use('*', (req, res) => {
 
 db.on('error', console.error.bind(console, 'Connection error'))
 db.once('open', () => console.log('db connection open!'))
+// db.Order.update({username: "tom"}, {$pull: {documents: {$exists: true}}})
+
 
 
 
