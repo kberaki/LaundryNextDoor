@@ -119,10 +119,17 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
+let orig
+let originaddr =[]
+Order.find({},(err, originaddr)=>{
+orig = originaddr[1].address
+console.log(orig)
+})
 
 let dest
+
 Provider.find({}, (err, addr)=>{
-let dest= addr[0].address 
+ dest= addr[0].address 
 console.log(dest)
  })
 
@@ -135,7 +142,7 @@ app.get('/order', (req, res) => {
   })
   .catch(err=>res.send(err))
 })
-
+originaddr=[]
 const Distance= function(dis){
   this.dis=dis.body.rows[0].elements[0].distance.text,
   this.dur=dis.body.rows[0].elements[0].duration.text
