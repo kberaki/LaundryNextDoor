@@ -31,9 +31,9 @@ const laundarySchema = new mongoose.Schema({
   address: String,
   state:String,
   City:String,
-  zipcode: Number,
-
+  zipcode: Number
 })
+
 const User = mongoose.model("User", laundarySchema)
 
 const orderSchema = new mongoose.Schema({
@@ -119,31 +119,34 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
-let orig =[]
 
+  
+app.get('/order', (req, res) => {
+  let orig =[]
 let originaddr =[]
 Order.find({},(err, originaddr)=>{
 orig.push(originaddr[originaddr.length-1].address)
 console.log(orig.toString())
 })
-
-let dest
-
+  let dest =[]
 Provider.find({}, (err, addr)=>{
- dest= addr[0].address 
-console.log(dest)
- })
+  for(let i=0; i<addr.length; i++){
+  dest.push(addr[i].address) 
+  console.log(dest)
+}  
+})
+  .then(result=>{
+    const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[4]}|${dest[1]}&key=${process.env.GOOGLE_API_KEY}`
 
-app.get('/order', (req, res) => {
-
-  const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest}&key=${process.env.GOOGLE_API_KEY}`
   superagent.get(url)
   .then(result=>{
+    console.log(url)
     res.send(new Distance(result))
   })
+})
   .catch(err=>res.send(err))
 })
-originaddr=[]
+
 const Distance= function(dis){
   this.dis=dis.body.rows[0].elements[0].distance.text,
   this.dur=dis.body.rows[0].elements[0].duration.text
