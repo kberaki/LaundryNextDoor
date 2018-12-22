@@ -122,7 +122,7 @@ app.set('view engine', 'ejs')
 let orig
 let originaddr =[]
 Order.find({},(err, originaddr)=>{
-orig = originaddr[0].address
+orig = originaddr[1].address
 console.log(orig)
 })
 
