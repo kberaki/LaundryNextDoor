@@ -36,6 +36,18 @@ const laundarySchema = new mongoose.Schema({
 
 const User = mongoose.model("User", laundarySchema)
 
+const orderSchema = new mongoose.Schema({
+  fullName: String,
+  emailAddress: String,
+  phoneNumber: Number,
+  address: String,
+  state:String,
+  City:String,
+  specialAtt:String,
+
+})
+const Order = mongoose.model("Order", orderSchema)
+
 app.get('/', (req, res) => {
   res.render('pages/index')
 })
@@ -67,6 +79,25 @@ app.get("/signupForm", (req, res) => {
   });
 });
 
+app.post("/post-orderForm", (req, res) => {
+  const orderData = new Order({
+    fullName : req.body.name,
+    emailAddress:req.body.email,
+    phoneNumber:req.body.phone,
+    address:req.body.address,
+    state:req.body.state,
+    City:req.body.city,
+    specialAtt:req.body.attention
+  });
+  orderData.save()
+  .then(item => {
+  res.send("You have successfully placed an order, thank you for your business");
+  })
+  .catch(err => {
+  res.status(400).send(" Error occuried please check your data")
+  });
+});
+
  app.post('/provider-form', function(req,res){
   console.log('Check')
   new Provider({
@@ -88,9 +119,15 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
+
   
 app.get('/order', (req, res) => {
-  let orig ="15606+Emerland+way+Bowie"
+  let orig =[]
+let originaddr =[]
+Order.find({},(err, originaddr)=>{
+orig.push(originaddr[originaddr.length-1].address)
+console.log(orig.toString())
+})
   let dest =[]
 Provider.find({}, (err, addr)=>{
   for(let i=0; i<addr.length; i++){
@@ -100,6 +137,7 @@ Provider.find({}, (err, addr)=>{
 })
   .then(result=>{
     const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[4]}|${dest[1]}&key=${process.env.GOOGLE_API_KEY}`
+
   superagent.get(url)
   .then(result=>{
     console.log(url)
@@ -108,7 +146,6 @@ Provider.find({}, (err, addr)=>{
 })
   .catch(err=>res.send(err))
 })
-
 
 const Distance= function(dis){
   this.dis=dis.body.rows[0].elements[0].distance.text,
@@ -124,6 +161,8 @@ app.use('*', (req, res) => {
 
 db.on('error', console.error.bind(console, 'Connection error'))
 db.once('open', () => console.log('db connection open!'))
+// db.Order.update({username: "tom"}, {$pull: {documents: {$exists: true}}})
+
 
 
 
