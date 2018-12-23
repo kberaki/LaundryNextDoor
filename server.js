@@ -140,12 +140,15 @@ app.get('/order', (req, res) => {
   superagent.get(url)
   .then(result=>{
     res.send(new Distance(result))
+    
   })
+  
   .catch(err=>res.send(err))
 })
+
 originaddr=[]
 const Distance= function(dis){
-  this.dis=dis.body.rows[0].elements[0].distance.text,
+  //this.dis=dis.body.rows[0].elements[0].distance.text,
   this.dur=dis.body.rows[0].elements[0].duration.text
 }
 
