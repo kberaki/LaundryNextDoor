@@ -121,9 +121,8 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs')
 
   
-app.get('/order', (req, res) => {
-  let orig =[]
-let originaddr =[]
+
+let orig =[]
 Order.find({},(err, originaddr)=>{
 orig.push(originaddr[originaddr.length-1].address)
 console.log(orig.toString())
@@ -132,25 +131,49 @@ console.log(orig.toString())
 Provider.find({}, (err, addr)=>{
   for(let i=0; i<addr.length; i++){
   dest.push(addr[i].address) 
-  console.log(dest)
-}  
+}
 })
-  .then(result=>{
-    const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[4]}|${dest[1]}&key=${process.env.GOOGLE_API_KEY}`
 
+app.get('/order', (req, res) => {
+    const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[1]}|${dest[2]}|${dest[3]}&key=${process.env.GOOGLE_API_KEY}`
   superagent.get(url)
   .then(result=>{
-    console.log(url)
-    res.send(new Distance(result))
+    let ss 
+    let arr = new Distance(result)
+      for(let i=0; i<arr.dis.length; i++){
+        ss= arr.dis[i].distance.text
+        let min=[]
+        min.push(parseFloat(ss))
+        console.log(min)     
+     }
+     res.send(min)
+    
   })
-})
+
   .catch(err=>res.send(err))
 })
 
-const Distance= function(dis){
-  this.dis=dis.body.rows[0].elements[0].distance.text,
-  this.dur=dis.body.rows[0].elements[0].duration.text
+
+const Distance= function(dis, dur){
+  this.dis=dis.body.rows[0].elements
+  // this.dur=dis.body.rows[0].elements[0].duration.text
+  
 }
+
+//   res = function(dis){
+//     let newArr
+//     for(let i=0; i<elements.length; i++){
+//       newArr.push(elements[i].distance.text)
+//       if(parseInt(newArr[i])===Math.min()){
+//         return newArr[i]
+//       }
+  
+//     }
+//     return newArr
+//   }
+
+
+
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
 
