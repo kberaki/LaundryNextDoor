@@ -31,9 +31,9 @@ const laundarySchema = new mongoose.Schema({
   address: String,
   state:String,
   City:String,
-  zipcode: Number,
-
+  zipcode: Number
 })
+
 const User = mongoose.model("User", laundarySchema)
 
 const orderSchema = new mongoose.Schema({
@@ -119,37 +119,57 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
-let orig =[]
 
+let orig =[]
 let originaddr =[]
 Order.find({},(err, originaddr)=>{
 orig.push(originaddr[originaddr.length-1].address)
 console.log(orig.toString())
 })
-
-let dest
-
+  let dest =[]
 Provider.find({}, (err, addr)=>{
- dest= addr[0].address 
-console.log(dest)
- })
-
+  for(let i=0; i<addr.length; i++){
+  dest.push(addr[i].address) 
+  console.log(dest[i])
+}  
+}) 
+let calcuArry=[]
 app.get('/order', (req, res) => {
 
-  const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest}&key=${process.env.GOOGLE_API_KEY}`
+  //.then(result=>{
+    //for(let i=0; i<dest.length; i++){
+    const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[1]}|${dest[2]}|${dest[3]}|${dest[4]}&key=${process.env.GOOGLE_API_KEY}`
+
   superagent.get(url)
   .then(result=>{
-    res.send(new Distance(result))
-    
-  })
-  
-  .catch(err=>res.send(err))
-})
+    //console.log(url)
+   let finalarr =[]
+   //console.log(result)
+   finalarr.push(new Distance(result))
 
-originaddr=[]
+    res.send(new Distance(result))
+    //calcuArry.push(finalarr[0].dur.elements)
+    //console.log(calcuArry)
+  
+  })
+//})
+
+  .catch(err=>res.send(err))
+   // }
+})
+//console.log(calcuArry)
+// const Duration =function(dura){
+//   this.Durat=dura.body.
+// }
+
 const Distance= function(dis){
   //this.dis=dis.body.rows[0].elements[0].distance.text,
-  this.dur=dis.body.rows[0].elements[0].duration.text
+  //for(let i=0; i<5;i++){ 
+  let gebray =[]
+  gebray.push(dis.body.rows[0].elements)
+  this.dur= gebray
+//}
+console.log(gebray[0])
 }
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
