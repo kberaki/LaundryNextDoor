@@ -27,7 +27,7 @@ mongoose.connect(mongoURL)
 const laundarySchema = new mongoose.Schema({
   fullName: String,
   emailAddress: String,
-  phoneNumber: Number,
+  phoneNumber: Number, 
   address: String,
   state:String,
   City:String,
@@ -140,13 +140,27 @@ app.get('/order', (req, res) => {
   .then(result=>{
     let ss 
     let arr = new Distance(result)
-      for(let i=0; i<arr.dis.length; i++){
-        ss= arr.dis[i].distance.text
-        let min=[]
-        min.push(parseFloat(ss))
-        console.log(min)     
-     }
-     res.send(min)
+    //console.log(new Distance(result))
+    
+    
+    let Estimate
+    let min=[]
+    let ETA = 60
+    for(let i=0; i<arr.dis.length; i++){
+      
+      ss= parseFloat(arr.dis[i].distance.text)
+      min.push(ss)
+      if(ss<ETA){
+        ETA = ss
+      }
+      
+      
+    }
+    Estimate= Math.min.apply(null, min);
+
+    //let x = Math.min(min)
+    console.log(Estimate)
+    res.send("<h3>The nearest service provider is  </h3>"+ Math.min.apply(null, min) + "<h3> miles Away, and will arrive in ??? </h3>") 
     
   })
 
