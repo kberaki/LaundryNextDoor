@@ -90,13 +90,48 @@ app.post("/post-orderForm", (req, res) => {
     specialAtt:req.body.attention
   });
   orderData.save()
-  .then(item => {
-  res.send("You have successfully placed an order, thank you for your business");
+  const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[1]}|${dest[2]}|${dest[3]}&key=${process.env.GOOGLE_API_KEY}`
+  superagent.get(url)
+  .then(result=>{
+    let ss 
+    let arr = new Distance(result)
+    //console.log(new Distance(result))
+    
+    
+    let Estimate
+    let min=[]
+    let ETA = 60
+    for(let i=0; i<arr.dis.length; i++){
+      
+      ss= parseFloat(arr.dis[i].distance.text)
+      min.push(ss)
+      if(ss<ETA){
+        ETA = ss
+      }
+      
+      
+    }
+    Estimate= Math.min.apply(null, min);
+
+    //let x = Math.min(min)
+    console.log(Estimate)
+    res.send("<h3>The nearest service provider is  </h3>"+ Math.min.apply(null, min) + "<h3> miles Away, and will arrive in ??? </h3>") 
+    
   })
-  .catch(err => {
-  res.status(400).send(" Error occuried please check your data")
-  });
-});
+
+  .catch(err=>res.send(err))
+})
+
+
+
+
+//   .then(item => {
+//   res.send("You have successfully placed an order, thank you for your business");
+//   })
+//   .catch(err => {
+//   res.status(400).send(" Error occuried please check your data")
+//   });
+// });
 
  app.post('/provider-form', function(req,res){
   console.log('Check')
@@ -134,38 +169,38 @@ Provider.find({}, (err, addr)=>{
 }
 })
 
-app.get('/order', (req, res) => {
-    const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[1]}|${dest[2]}|${dest[3]}&key=${process.env.GOOGLE_API_KEY}`
-  superagent.get(url)
-  .then(result=>{
-    let ss 
-    let arr = new Distance(result)
-    //console.log(new Distance(result))
+// app.get('/order', (req, res) => {
+//     const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[1]}|${dest[2]}|${dest[3]}&key=${process.env.GOOGLE_API_KEY}`
+//   superagent.get(url)
+//   .then(result=>{
+//     let ss 
+//     let arr = new Distance(result)
+//     //console.log(new Distance(result))
     
     
-    let Estimate
-    let min=[]
-    let ETA = 60
-    for(let i=0; i<arr.dis.length; i++){
+//     let Estimate
+//     let min=[]
+//     let ETA = 60
+//     for(let i=0; i<arr.dis.length; i++){
       
-      ss= parseFloat(arr.dis[i].distance.text)
-      min.push(ss)
-      if(ss<ETA){
-        ETA = ss
-      }
+//       ss= parseFloat(arr.dis[i].distance.text)
+//       min.push(ss)
+//       if(ss<ETA){
+//         ETA = ss
+//       }
       
       
-    }
-    Estimate= Math.min.apply(null, min);
+//     }
+//     Estimate= Math.min.apply(null, min);
 
-    //let x = Math.min(min)
-    console.log(Estimate)
-    res.send("<h3>The nearest service provider is  </h3>"+ Math.min.apply(null, min) + "<h3> miles Away, and will arrive in ??? </h3>") 
+//     //let x = Math.min(min)
+//     console.log(Estimate)
+//     res.send("<h3>The nearest service provider is  </h3>"+ Math.min.apply(null, min) + "<h3> miles Away, and will arrive in ??? </h3>") 
     
-  })
+//   })
 
-  .catch(err=>res.send(err))
-})
+//   .catch(err=>res.send(err))
+// })
 
 
 const Distance= function(dis, dur){
