@@ -93,30 +93,42 @@ app.post("/post-orderForm", (req, res) => {
   const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[1]}|${dest[2]}|${dest[3]}&key=${process.env.GOOGLE_API_KEY}`
   superagent.get(url)
   .then(result=>{
-    let ss 
+    
     let arr = new Distance(result)
     //console.log(new Distance(result))
-    
-    
-    let Estimate
-    let min=[]
-    let ETA = 60
+    let ss 
+    let ss2
+
+    // let Estimate
+    let min2=[]
+    // let ETA = 60
     for(let i=0; i<arr.dis.length; i++){
-      
       ss= parseFloat(arr.dis[i].distance.text)
-      min.push(ss)
-      if(ss<ETA){
-        ETA = ss
-      }
-      
-      
+      ss2= arr.dis[i].duration.text
+      min2.push({ss, ss2})
+      // min.push(ss)
+      // if(ss<ETA){
+      //   ETA = ss
+      // }
+        
     }
-    Estimate= Math.min.apply(null, min);
+    console.log(min2)
+    let dur = []
+    let mom
+    for(let i=0; i<min2.length; i++){
+      dur.push(min2[i].ss)
+      if(Math.min(dur)){
+      mom = `You are ${min2[i].ss} miles away and our service provider will arrive in ${min2[i].ss2}`
+      }
+    }
+    console.log(mom)
+    
+    // Estimate= Math.min.apply(null, min);
 
     //let x = Math.min(min)
-    console.log(Estimate)
-    res.send("<h3>The nearest service provider is  </h3>"+ Math.min.apply(null, min) + "<h3> miles Away, and will arrive in ??? </h3>") 
-    
+    // console.log(Estimate)
+    // res.send("<h3>The nearest service provider is  </h3>"+ Math.min.apply(null, min) + "<h3> miles Away, and will arrive in ??? </h3>") 
+    res.send(mom)
   })
 
   .catch(err=>res.send(err))
