@@ -48,6 +48,11 @@ const orderSchema = new mongoose.Schema({
 })
 const Order = mongoose.model("Order", orderSchema)
 
+var publicDir = require('path').join(__dirname,'/public');
+app.use(express.static(publicDir));
+
+app.use(express.static('public'))
+app.use(express.static('images'))
 app.get('/', (req, res) => {
   res.render('pages/index')
 })
@@ -106,6 +111,7 @@ app.post("/post-orderForm", (req, res) => {
   superagent.get(url)
   .then(result=>{
     let arr = new Distance(result)
+
     let ss 
     let ss2
     let min2=[]
@@ -125,6 +131,7 @@ app.post("/post-orderForm", (req, res) => {
     }
     console.log(mom)
     res.send(mom)
+
   })
 
   .catch(err=>res.send(err))
@@ -148,7 +155,7 @@ app.post("/post-orderForm", (req, res) => {
 
 app.use(express.urlencoded({ extended: true }))
 //when adding css files, put them in a public folder and include this line of code
-app.use(express.static('public'))
+
 
 app.set('view engine', 'ejs')
 

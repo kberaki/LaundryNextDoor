@@ -1,0 +1,46 @@
+#order{
+  padding: 2em;
+  align-self: center;
+  color: rgb(6, 206, 19);
+  font-size: 3ex
+  
+}
+#signup{
+  padding: 2em;
+  align-self: center;
+  color: rgb(21, 147, 226);
+  font-size: 3ex
+  
+}
+#leg{
+  color: rgb(6, 206, 19);
+  font-size: 4ex;
+  text-align: center;
+}
+.logo{
+  border-block-end-width: 3ch;
+  height: 3ch;
+}
+body{
+  background-color: brown;
+}
+#provider{
+  color: aliceblue;
+  font-size: 2ex;
+  padding: 2ex;
+}
+#prov{
+  color: rgb(246, 248, 250);
+  font-size: 4ex;
+  text-align: center;
+}
+#submit{
+  background-color: rgb(249, 255, 127);
+  color: blue;
+}
+h1{
+  text-align: center;
+}
+h2{
+  text-align: center;
+}

@@ -5,20 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Sign up</title>
+  <% include ../templates/head %>
 </head>
 <body>
-<form method="POST" action="/signupForm">
+<form method="POST" action="/signupForm" id="signup">
+  
   <div class="form-row">
-      <div class="form-group">
+      <div class="form-group col-md">
           <label for="FullName">Full name</label>
           <input type="text" class="form-control" name ="name" id="FullName" placeholder="First Name, Last Name">
         </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md ">
       <label for="inputEmail4">Email</label>
       <input type="email" class="form-control" name="email" id="inputEmail4" placeholder="Email">
-    </div>
-    <div class="form-group col-md-6">
-      <label for="inputPhoneNum">Phone Number</label>
+    </div><br>
+    <div class="form-group col">
+      <label for="PhoneNum">Phone Number</label>
       <input type="phonenumber" class="form-control" name="phone" id="inputEmail4" placeholder="Phone Number">
     </div>
   </div>
@@ -41,14 +43,7 @@
       <input type="text" class="form-control" name= "zipcode" id="inputZip">
     </div>
   </div>
-  <div class="form-group">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="gridCheck">
-      <label class="form-check-label" for="gridCheck">
-        Check me out
-      </label>
-    </div>
-  </div>
+ 
   <button type="submit" class="btn btn-primary">Sign up</button>
 </form>
 </body>
