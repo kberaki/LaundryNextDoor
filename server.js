@@ -79,6 +79,18 @@ app.get("/signupForm", (req, res) => {
   });
 });
 
+let orig =[]
+Order.find({},(err, originaddr)=>{
+orig.push(originaddr[originaddr.length-1].address)
+console.log(orig.toString())
+})
+  let dest =[]
+Provider.find({}, (err, addr)=>{
+  for(let i=0; i<addr.length; i++){
+  dest.push(addr[i].address) 
+}
+})
+
 app.post("/post-orderForm", (req, res) => {
   const orderData = new Order({
     fullName : req.body.name,
@@ -140,18 +152,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
-
-let orig =[]
-Order.find({},(err, originaddr)=>{
-orig.push(originaddr[originaddr.length-1].address)
-console.log(orig.toString())
-})
-  let dest =[]
-Provider.find({}, (err, addr)=>{
-  for(let i=0; i<addr.length; i++){
-  dest.push(addr[i].address) 
-}
-})
 
 const Distance= function(dis, dur){
   this.dis=dis.body.rows[0].elements
