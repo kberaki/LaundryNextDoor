@@ -6,36 +6,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Laundry Next door</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-  <script src="main.js"></script>
+ <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
+  <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+ 
+  <% include ../templates/head %>
 </head>
 <body>
-  <nav class="navbar navbar-default" >
-    <div class = "container">
-      <div class ="navbar-header">
-        <a href="#" class ="navbar-brand">CleanApp</a>
-      </div>
-      <!----
-    <div class ="collapse navbar-collapse" id ="humberger">
-      --->
-        <ul class="nav navbar-nav">
-           <!--<li><a href="#">About Us</a></li>-->
-          <li><a href="#">How it works</a></li>
-        </ul>
-      <ul class="nav navbar-nav navbar-right">
-
-        </li><a href="signupForm">Sign up as User</a></li>
-        <span><span></span></span> 
-       <li><a href="provider-form">Provider Sign-Up</a></li>
-        <li><a class="btn btn-success" href="post-orderForm">Place an Order</a><li>
-
-      </ul>
   
-    </div>
-  </nav>
-    <div class="jumbotron jumbotron-fluid">
+  <style>
+      body {color: rgb(0, 136, 255);}
+      section{background-color: rgb(255, 166, 0); color: ghostwhite};
+  
+    </style>
+   
+    <div class="jumbotron jumbotron-fluid"> 
         <h1 class="display-4">Laundry Next Door</h1>
         <h3 class="lead">Save time and help your neigbours</h3>
         <hr class="my-4">
@@ -44,45 +29,48 @@
         <a class="btn btn-primary" href="#" role="button">Place an order</a>
       </div>
     </div>
-
+<section> 
     <div class="Howitworks"><h1>How it works</h1></div>
 
     <div class="card-deck">
         <div class="card">
-          <img class="card-img-top" src=".../100px180/" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
+            <div class="card-footer">
+                <h2 class="text-muted"> 1. Place an Order</h2>
+              </div>
+          <img class="card-img-top" src="/images/wash2.jpg" alt="Card image cap">
+          
+          
         </div>
         <div class="card">
-          <img class="card-img-top" src=".../100px180/" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
+            <div class="card-footer">
+                <h2 class="text-muted"> 2. Pick Up</h2>
+              </div>
+          <img class="card-img-top" src="/images/wash2.jpg" alt="Card image cap">
+          
+          
         </div>
         <div class="card">
-          <img class="card-img-top" src=".../100px180/" alt="Card image cap">
+            <div class="card-footer">
+                <h2 class="text-muted">3.Clean Clothes Delived</h2>
+              </div>
+          <img class="card-img-top" src="/images/wfold.png" alt="Card image cap">
           <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+            <h5 class="card-title"></h5>
+            <p class="card-text"></p>
           </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
+          
         </div>
       </div>
-
+</section>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!--<script src="main.js"></script> -->
+
+<footer>
+    <% include ../templates/footer %>
+</footer>
 
 </body>
+
 </html>

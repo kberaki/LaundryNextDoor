@@ -3979,9 +3979,14 @@ input[type="button"].btn-block {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   -ms-flex-align: center;
-  align-items: center;
+
   -ms-flex-pack: justify;
   justify-content: space-between;
+  
+  font-size: 20px;
+  background-size: cover;
+  color: hsl(350, 100%, 50%);
+  
 }
 
 .navbar-brand {
@@ -4885,7 +4890,7 @@ input[type="button"].btn-block {
 .jumbotron {
   padding: 4rem 1rem;
   margin-bottom: 4rem;
-  background-color: #0988f7d7;
+  background-color: #09f76cd7;
   background-size: cover;
   align-content: center;
   color:white;
@@ -4903,6 +4908,7 @@ input[type="button"].btn-block {
   padding-right: 0;
   padding-left: 0;
   border-radius: 0;
+  background-color: #005cbf'
 }
 
 .alert {
@@ -9009,6 +9015,7 @@ a.text-dark:hover, a.text-dark:focus {
   }
   .navbar {
     display: none;
+    color: red;
   }
   .badge {
     border: 1px solid #000;

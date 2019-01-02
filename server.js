@@ -48,6 +48,11 @@ const orderSchema = new mongoose.Schema({
 })
 const Order = mongoose.model("Order", orderSchema)
 
+var publicDir = require('path').join(__dirname,'/public');
+app.use(express.static(publicDir));
+
+app.use(express.static('public'))
+app.use(express.static('images'))
 app.get('/', (req, res) => {
   res.render('pages/index')
 })
@@ -97,25 +102,35 @@ app.post("/post-orderForm", (req, res) => {
     let arr = new Distance(result)
     //console.log(new Distance(result))
     
-    
+    let ss2
     let Estimate
+    let dura=[]
     let min=[]
     let ETA = 60
     for(let i=0; i<arr.dis.length; i++){
+        //console.log(arr.dis)
       
-      ss= parseFloat(arr.dis[i].distance.text)
+      ss= parseFloat(arr.dis[i].duration.text ) 
+      //(arr.dis[i].distance.text, 
+      //ss2=arr.dis[i].duration.text
+      //parseFloat
       min.push(ss)
+      dura.push(ss2)
+      console.log(ss)
+      //console.log(dura)
+      
       if(ss<ETA){
-        ETA = ss
+       ETA = ss
       }
       
       
     }
+   
     Estimate= Math.min.apply(null, min);
 
     //let x = Math.min(min)
-    console.log(Estimate)
-    res.send("<h3>The nearest service provider is  </h3>"+ Math.min.apply(null, min) + "<h3> miles Away, and will arrive in ??? </h3>") 
+    //console.log(Estimate)
+    res.send("The nearest service provider will arrive in "+ Estimate+ "min ") 
     
   })
 
@@ -151,7 +166,7 @@ app.post("/post-orderForm", (req, res) => {
 
 app.use(express.urlencoded({ extended: true }))
 //when adding css files, put them in a public folder and include this line of code
-app.use(express.static('public'))
+
 
 app.set('view engine', 'ejs')
 
