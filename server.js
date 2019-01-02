@@ -84,6 +84,18 @@ app.get("/signupForm", (req, res) => {
   });
 });
 
+let orig =[]
+Order.find({},(err, originaddr)=>{
+orig.push(originaddr[originaddr.length-1].address)
+console.log(orig.toString())
+})
+  let dest =[]
+Provider.find({}, (err, addr)=>{
+  for(let i=0; i<addr.length; i++){
+  dest.push(addr[i].address) 
+}
+})
+
 app.post("/post-orderForm", (req, res) => {
   const orderData = new Order({
     fullName : req.body.name,
@@ -98,55 +110,32 @@ app.post("/post-orderForm", (req, res) => {
   const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[1]}|${dest[2]}|${dest[3]}&key=${process.env.GOOGLE_API_KEY}`
   superagent.get(url)
   .then(result=>{
-    let ss 
     let arr = new Distance(result)
-    //console.log(new Distance(result))
-    
-    let ss2
-    let Estimate
-    let dura=[]
-    let min=[]
-    let ETA = 60
-    for(let i=0; i<arr.dis.length; i++){
-        //console.log(arr.dis)
-      
-      ss= parseFloat(arr.dis[i].duration.text ) 
-      //(arr.dis[i].distance.text, 
-      //ss2=arr.dis[i].duration.text
-      //parseFloat
-      min.push(ss)
-      dura.push(ss2)
-      console.log(ss)
-      //console.log(dura)
-      
-      if(ss<ETA){
-       ETA = ss
-      }
-      
-      
-    }
-   
-    Estimate= Math.min.apply(null, min);
 
-    //let x = Math.min(min)
-    //console.log(Estimate)
-    res.send("The nearest service provider will arrive in "+ Estimate+ "min ") 
-    
+    let ss 
+    let ss2
+    let min2=[]
+    for(let i=0; i<arr.dis.length; i++){
+      ss= parseFloat(arr.dis[i].distance.text)
+      ss2= arr.dis[i].duration.text
+      min2.push({ss, ss2})    
+    }
+
+    let dur = []
+    let mom
+    for(let i=0; i<min2.length; i++){
+      dur.push(min2[i].ss)
+      if(Math.min(dur)){
+      mom = `You are ${min2[i].ss} miles away and our service provider will arrive in ${min2[i].ss2}`
+      }
+    }
+    console.log(mom)
+    res.send(mom)
+
   })
 
   .catch(err=>res.send(err))
 })
-
-
-
-
-//   .then(item => {
-//   res.send("You have successfully placed an order, thank you for your business");
-//   })
-//   .catch(err => {
-//   res.status(400).send(" Error occuried please check your data")
-//   });
-// });
 
  app.post('/provider-form', function(req,res){
   console.log('Check')
@@ -170,74 +159,10 @@ app.use(express.urlencoded({ extended: true }))
 
 app.set('view engine', 'ejs')
 
-  
-
-let orig =[]
-Order.find({},(err, originaddr)=>{
-orig.push(originaddr[originaddr.length-1].address)
-console.log(orig.toString())
-})
-  let dest =[]
-Provider.find({}, (err, addr)=>{
-  for(let i=0; i<addr.length; i++){
-  dest.push(addr[i].address) 
-}
-})
-
-// app.get('/order', (req, res) => {
-//     const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[1]}|${dest[2]}|${dest[3]}&key=${process.env.GOOGLE_API_KEY}`
-//   superagent.get(url)
-//   .then(result=>{
-//     let ss 
-//     let arr = new Distance(result)
-//     //console.log(new Distance(result))
-    
-    
-//     let Estimate
-//     let min=[]
-//     let ETA = 60
-//     for(let i=0; i<arr.dis.length; i++){
-      
-//       ss= parseFloat(arr.dis[i].distance.text)
-//       min.push(ss)
-//       if(ss<ETA){
-//         ETA = ss
-//       }
-      
-      
-//     }
-//     Estimate= Math.min.apply(null, min);
-
-//     //let x = Math.min(min)
-//     console.log(Estimate)
-//     res.send("<h3>The nearest service provider is  </h3>"+ Math.min.apply(null, min) + "<h3> miles Away, and will arrive in ??? </h3>") 
-    
-//   })
-
-//   .catch(err=>res.send(err))
-// })
-
-
 const Distance= function(dis, dur){
   this.dis=dis.body.rows[0].elements
-  // this.dur=dis.body.rows[0].elements[0].duration.text
-  
+  // this.dur=dis.body.rows[0].elements[0].duration.text 
 }
-
-//   res = function(dis){
-//     let newArr
-//     for(let i=0; i<elements.length; i++){
-//       newArr.push(elements[i].distance.text)
-//       if(parseInt(newArr[i])===Math.min()){
-//         return newArr[i]
-//       }
-  
-//     }
-//     return newArr
-//   }
-
-
-
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
 
