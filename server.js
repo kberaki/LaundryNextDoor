@@ -105,7 +105,6 @@ app.post("/post-orderForm", (req, res) => {
   const url =`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${orig}&destinations=${dest[0]}|${dest[1]}|${dest[2]}|${dest[3]}&key=${process.env.GOOGLE_API_KEY}`
   superagent.get(url)
   .then(result=>{
-    
     let arr = new Distance(result)
     let ss 
     let ss2
