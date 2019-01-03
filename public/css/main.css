@@ -18,8 +18,9 @@
   text-align: center;
 }
 .logo{
-  border-block-end-width: 3ch;
-  height: 3ch;
+  border-block-end-width: 4.5ch;
+  height: 4.5ch;
+  align-items: stretch;
 }
 body{
   background-color: brown;
@@ -43,4 +44,8 @@ h1{
 }
 h2{
   text-align: center;
+ 
+}
+section{
+  background-color:  #0970f7d7;
 }

@@ -46,7 +46,7 @@ html {
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
-  -ms-overflow-style: scrollbar;
+
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -393,7 +393,7 @@ h6, .h6 {
 }
 
 .lead {
-  font-size: 1.25rem;
+  font-size: 30px;
   font-weight: 300;
 }
 
@@ -416,7 +416,7 @@ h6, .h6 {
 }
 
 .display-4 {
-  font-size: 3.5rem;
+  font-size: 8rem;
   font-weight: 300;
   line-height: 1.2;
 }
@@ -3875,6 +3875,7 @@ input[type="button"].btn-block {
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
+  color: #ff0000
 }
 
 .nav-link {
@@ -3964,12 +3965,14 @@ input[type="button"].btn-block {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
+  font-family: sans-serif;
   flex-wrap: wrap;
   -ms-flex-align: center;
   align-items: center;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  padding: 0rem 1rem;
+  color: #ff0037;
 }
 
 .navbar > .container,
@@ -3985,18 +3988,19 @@ input[type="button"].btn-block {
   
   font-size: 20px;
   background-size: cover;
-  color: hsl(350, 100%, 50%);
+  color: hsl(81, 100%, 50%);
   
 }
 
 .navbar-brand {
   display: inline-block;
-  padding-top: 0.3125rem;
-  padding-bottom: 0.3125rem;
+  padding: top 0rem;
+  padding-bottom: 0rem;
   margin-right: 1rem;
   font-size: 1.25rem;
   line-height: inherit;
   white-space: nowrap;
+  color: rgb(55, 75, 253);
 }
 
 .navbar-brand:hover, .navbar-brand:focus {
@@ -4882,33 +4886,42 @@ input[type="button"].btn-block {
   background-color: #1d2124;
 }
 .Howitworks{
- align-content: center;
- margin-bottom: 4rem;
-  color: rgb(0, 110, 255);
+  align-content: center;
+ margin-bottom: 0rem;
+ color:  #0970f7d7;
 }
 
-.jumbotron {
-  padding: 4rem 1rem;
-  margin-bottom: 4rem;
-  background-color: #09f76cd7;
+.jumbotron-main {
+  padding: 14rem 2rem;
+  margin-bottom: 0rem;
+  background-color: #0970f7d7;
+ 
   background-size: cover;
   align-content: center;
-  color:white;
-  border-radius: 1rem;
-  height: 70%;
+  color:rgb(255, 255, 255);
+  border-radius: 0rem;
+  height: 20%;
+}
+ 
+.jumbotron-fluid {
+  padding-right: 0;
+  padding-left: 0;
+  border-radius: 0;
+  height: 40%;
+  background-color: #2794e7;
 }
 
 @media (min-width: 576px) {
   .jumbotron {
     padding: 4rem 2rem;
   }
-}
+
 
 .jumbotron-fluid {
   padding-right: 0;
   padding-left: 0;
   border-radius: 0;
-  background-color: #005cbf'
+  background-color: #005cbf;
 }
 
 .alert {

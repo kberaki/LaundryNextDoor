@@ -56,6 +56,7 @@ app.use(express.static('images'))
 app.get('/', (req, res) => {
   res.render('pages/index')
 })
+
 app.get('/post-orderForm', (req, res)=>{
   res.render('pages/order-form')
 })
