@@ -66,6 +66,24 @@ app.get("/signupForm", (req, res) => {
  app.get('/provider-form', (req, res)=>{
   res.render('pages/provider-form')
  })
+ app.post('/provider-form', (req,res)=>{
+ // console.log('Check')
+  const providerData= new Provider({
+    name: req.body.FirstName,
+    email:req.body.email,
+    address:req.body.address,
+    city: req.body.city,
+    zip:req.body.zip
+ })
+ providerData.save()
+  .then(item => {
+    res.send("You have successfully signed up");
+    })
+    .catch(err => {
+    res.status(400).send(" Error occuried please check your data")
+    });
+ })
+
  app.post("/signupForm", (req, res) => {
   const userData = new User({
     fullName : req.body.name,
@@ -127,7 +145,7 @@ app.post("/post-orderForm", (req, res) => {
     for(let i=0; i<min2.length; i++){
       dur.push(min2[i].ss)
       if(Math.min(dur)){
-      mom = `You are ${min2[i].ss} miles away and our service provider will arrive in ${min2[i].ss2}`
+      mom = `You are ${min2[i].ss} miles away and our nearest service provider will arrive in ${min2[i].ss2}`
       }
     }
     console.log(mom)
@@ -138,22 +156,7 @@ app.post("/post-orderForm", (req, res) => {
   .catch(err=>res.send(err))
 })
 
- app.post('/provider-form', function(req,res){
-  console.log('Check')
-  new Provider({
-    name: req.body.FirstName,
-    email:req.body.email,
-    address:req.body.address,
-    city: req.body.city,
-    zip:req.body.zip
- }).save(function(err, Provider){
-   if(err) {
-     console.log('Error')
-   }
-   else res.send('Successful')
- })
- })
-
+ 
 app.use(express.urlencoded({ extended: true }))
 //when adding css files, put them in a public folder and include this line of code
 
