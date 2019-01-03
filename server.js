@@ -78,7 +78,7 @@ app.get("/signupForm", (req, res) => {
   });
   userData.save()
   .then(item => {
-  res.send("You have successfully signed up");
+  res.send("Thank you! You have successfully signed up as customer");
   })
   .catch(err => {
   res.status(400).send(" Error occuried please check your data")
@@ -138,21 +138,23 @@ app.post("/post-orderForm", (req, res) => {
   .catch(err=>res.send(err))
 })
 
- app.post('/provider-form', function(req,res){
-  console.log('Check')
-  new Provider({
+app.post('/provider-form', function(req,res){
+  // console.log('Check')
+  const providerData= new Provider({
     name: req.body.FirstName,
     email:req.body.email,
     address:req.body.address,
     city: req.body.city,
     zip:req.body.zip
- }).save(function(err, Provider){
-   if(err) {
-     console.log('Error')
-   }
-   else res.send('Successful')
  })
+ providerData.save()
+ .then(item=>{
+  res.send("Thank you! You have successfully signed up as provider");
  })
+ .catch(err => {
+  res.status(400).send(" Error occuried please check your data")
+  });
+});
 
 app.use(express.urlencoded({ extended: true }))
 //when adding css files, put them in a public folder and include this line of code
