@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
+    
   },
   "keywords": [],
   "author": "",
@@ -27,5 +28,7 @@
     "url": "https://github.com/kberaki/LaundryNextDoor/issues"
   },
   "homepage": "https://github.com/kberaki/LaundryNextDoor#readme",
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
 }
