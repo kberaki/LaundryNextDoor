@@ -1,5 +1,5 @@
 {
-  "name": "demo",
+  "name": "laundrynextdoor",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -9,7 +9,7 @@
     
   },
   "keywords": [],
-  "author": "",
+  "author": "ESK",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
